@@ -1,0 +1,30 @@
+name: Rest Assured Java CI
+
+on:
+  push:
+    paths:
+      - 'api/restassured-java/**'
+      - '.github/workflows/restassured.yml'
+  pull_request:
+    paths:
+      - 'api/restassured-java/**'
+      - '.github/workflows/restassured.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api/restassured-java
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Run Maven tests
+        run: mvn -B test -DfailIfNoTests=false

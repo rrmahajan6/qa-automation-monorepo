@@ -1,0 +1,36 @@
+name: RestSharp .NET CI
+
+on:
+  push:
+    paths:
+      - 'api/restsharp-dotnet/**'
+      - '.github/workflows/restsharp.yml'
+  pull_request:
+    paths:
+      - 'api/restsharp-dotnet/**'
+      - '.github/workflows/restsharp.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api/restsharp-dotnet
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore and Test (if project exists)
+        shell: bash
+        run: |
+          if compgen -G "*.sln" > /dev/null || compgen -G "*.csproj" > /dev/null; then
+            dotnet restore
+            dotnet test --no-restore
+          else
+            echo "No .sln or .csproj found in api/restsharp-dotnet. Skipping."
+          fi
