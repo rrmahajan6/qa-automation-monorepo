@@ -1,0 +1,22 @@
+{
+  "validLogin": {
+    "username": "rrmahajan6@gmail.com",
+    "password": "Test@1234",
+    "expectedResult": "success"
+  },
+  "invalidUsername": {
+    "username": "invaliduser",
+    "password": "Password123",
+    "expectedResult": "failure"
+  },
+  "invalidPassword": {
+    "username": "student",
+    "password": "WrongPassword",
+    "expectedResult": "failure"
+  },
+  "emptyCredentials": {
+    "username": "",
+    "password": "",
+    "expectedResult": "failure"
+  }
+}

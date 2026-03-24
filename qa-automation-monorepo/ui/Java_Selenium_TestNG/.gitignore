@@ -1,0 +1,47 @@
+# Build files
+target/
+build/
+*.class
+*.jar
+*.war
+
+# IDE Files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.project
+*.classpath
+.settings/
+.DS_Store
+
+# Test Results & Reports
+test-results/
+allure-results/
+allure-report/
+logs/
+*.log
+
+# Dependencies
+.m2/
+/dependency-reduced-pom.xml
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Screenshots
+/screenshots/
+test-results/screenshots/
+
+# Configuration
+*.local.properties
+config.local.properties
