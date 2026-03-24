@@ -1,0 +1,4 @@
+# Root workspace ignores
+bin/
+obj/
+.DS_Store
