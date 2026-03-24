@@ -1,0 +1,28 @@
+# Compiled
+target/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Logs
+target/logs/
+
+# Allure results (generated, not source-controlled)
+target/allure-results/
+target/site/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets — never commit credentials
+*.env
+secrets.properties

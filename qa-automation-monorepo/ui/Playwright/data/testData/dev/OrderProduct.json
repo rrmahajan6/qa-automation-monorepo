@@ -1,0 +1,22 @@
+{
+    "products": [
+    "ADIDAS ORIGINAL",
+    "ZARA COAT 3",
+    "iphone 13 pro"
+    ],
+    "creditCard": {
+        "cardholderName": "John Doe",
+        "cardNumber": "4532015112830366",
+        "expiryMonth": "12",
+        "expiryDate": "12",
+        "cvv": "123"
+    },
+    "address": {
+        "street": "123 Main Street",
+        "city": "New York",
+        "state": "NY",
+        "zipCode": "10001",
+        "country": "India",
+        "email": "rrmahajan6@gmail.com"
+    }
+}

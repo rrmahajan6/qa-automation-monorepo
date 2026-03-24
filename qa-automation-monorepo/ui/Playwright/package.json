@@ -1,0 +1,45 @@
+{
+  "name": "playwright-enterprise-framework",
+  "version": "1.0.0",
+  "description": "Enterprise-grade Playwright automation framework with POM, database integration, and multi-environment support",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "cross-env HEADLESS=false playwright test",
+    "test:smoke": "playwright test tests/e2e/smoke",
+    "test:regression": "playwright test tests/e2e/regression",
+    "test:dev": "cross-env ENV=dev playwright test",
+    "testing": "cross-env ENV=dev HEADLESS=false playwright test tests/e2e/regression/orderProduct.spec.js -g '@smoke'",
+    "test:qa": "cross-env ENV=qa playwright test",
+    "test:staging": "cross-env ENV=staging playwright test",
+    "test:keyvault": "node test-keyvault-connection.js",
+    "test:db-example": "playwright test tests/examples/database-keyvault.spec.js",
+    "report": "playwright show-report",
+    "ui": "playwright test --ui",
+    "debug": "playwright test --debug",
+    "codegen": "playwright codegen"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "e2e",
+    "framework",
+    "page-object-model"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.0.10",
+    "cross-env": "^10.1.0"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.13.0",
+    "@azure/keyvault-secrets": "^4.10.0",
+    "dotenv": "^16.4.5",
+    "mssql": "^12.2.0",
+    "pg": "^8.11.3"
+  }
+}

@@ -1,0 +1,98 @@
+name: API Tests CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run regression suite every day at 01:00 UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, staging, prod]
+      suite:
+        description: 'Test suite to run'
+        required: true
+        default: 'regression'
+        type: choice
+        options: [smoke, regression]
+
+jobs:
+  api-tests:
+    name: REST API Tests (${{ github.event.inputs.environment || 'dev' }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run smoke tests
+        if: github.event.inputs.suite == 'smoke' || github.event.inputs.suite == ''
+        env:
+          AUTH_TOKEN: ${{ secrets.API_AUTH_TOKEN }}
+        run: |
+          mvn clean test \
+            -Psmoke \
+            -Denv=${{ github.event.inputs.environment || 'dev' }} \
+            -Dauth.token=$AUTH_TOKEN \
+            -B -q
+
+      - name: Run regression tests
+        if: github.event.inputs.suite == 'regression'
+        env:
+          AUTH_TOKEN: ${{ secrets.API_AUTH_TOKEN }}
+        run: |
+          mvn clean test \
+            -Pregression \
+            -Denv=${{ github.event.inputs.environment || 'dev' }} \
+            -Dauth.token=$AUTH_TOKEN \
+            -B -q
+
+      - name: Generate Allure report
+        if: always()
+        run: mvn allure:report -B -q
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-${{ github.run_number }}
+          path: target/allure-results
+          retention-days: 7
+
+      - name: Upload Allure HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report-${{ github.run_number }}
+          path: target/site/allure-maven-plugin
+          retention-days: 7
+
+      - name: Upload test logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-logs-${{ github.run_number }}
+          path: target/logs
+          retention-days: 7
+
+      - name: Publish Allure report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always() && github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/site/allure-maven-plugin
+          destination_dir: allure-report
