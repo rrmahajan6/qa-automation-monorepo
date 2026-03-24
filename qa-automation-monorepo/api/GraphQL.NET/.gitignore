@@ -15,7 +15,6 @@
 
 # Mono auto generated files
 mono_crash.*
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -265,6 +264,10 @@ ServiceFabricBackup/
 *.mdf
 *.ldf
 *.ndf
+
+# SQLite files
+*.db-wal
+*.db-shm
 
 # Business Intelligence projects
 *.rdl.data
