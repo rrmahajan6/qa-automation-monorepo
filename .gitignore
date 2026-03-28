@@ -3,3 +3,32 @@ bin/
 obj/
 .DS_Store
 .git-backups/
+Product.db
+*.log
+
+# Test and report outputs (at any level)
+allure-results/
+allure-report/
+test-results/
+logs/
+playwright-report/
+screenshots/
+target/
+dist/
+coverage/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node/npm
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build artifacts
+*.jar
+*.class

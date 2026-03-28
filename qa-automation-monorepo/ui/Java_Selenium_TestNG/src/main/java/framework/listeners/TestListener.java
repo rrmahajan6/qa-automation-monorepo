@@ -30,9 +30,11 @@ public class TestListener implements ITestListener, IAnnotationTransformer {
      */
     @Override
     public void onTestStart(ITestResult result) {
-        // Initialize Extent report for this test
-        ExtentTestManager.createTest(result.getMethod().getMethodName())
-                .assignCategory(result.getTestClass().getRealClass().getSimpleName());
+        // Initialize Extent report for this test only if it does not already exist.
+        if (ExtentTestManager.getTest() == null) {
+            ExtentTestManager.createTest(result.getMethod().getMethodName());
+        }
+        ExtentTestManager.getTest().assignCategory(result.getTestClass().getRealClass().getSimpleName());
 
         LoggerUtil.info(logger, "");
         LoggerUtil.info(logger, "========== TEST STARTED: " + result.getMethod().getMethodName() + " ==========");
@@ -159,6 +161,7 @@ public class TestListener implements ITestListener, IAnnotationTransformer {
      * This enables automatic retry of failed tests
      */
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
         // Set retry analyzer for all test methods
         annotation.setRetryAnalyzer(RetryAnalyzer.class);

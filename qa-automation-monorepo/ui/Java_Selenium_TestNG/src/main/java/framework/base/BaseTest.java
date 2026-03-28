@@ -1,6 +1,8 @@
 package framework.base;
 
+import framework.listeners.TestListener;
 import framework.config.GlobalConfig;
+import framework.utils.ExtentTestManager;
 import framework.utils.LoggerUtil;
 import framework.utils.db.DataCleanupUtil;
 import org.openqa.selenium.WebDriver;
@@ -8,13 +10,17 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 import framework.utils.ScreenshotUtil;
+
+import java.lang.reflect.Method;
 
 /**
  * BaseTest Class
  * Parent class for all test classes
  * Handles setup and teardown of WebDriver
  */
+@Listeners(TestListener.class)
 public abstract class BaseTest {
 
     /**
@@ -56,8 +62,16 @@ public abstract class BaseTest {
      * Run before each test method - Initialize WebDriver and navigate to base URL
      */
     @BeforeMethod(alwaysRun = true)
-    public void beforeMethod() {
+    public void beforeMethod(Method method) {
         LoggerUtil.info(BaseTest.class, "========== Starting test: " + this.getClass().getSimpleName() + " ==========");
+
+        // Always reset thread-local test context before starting a new method.
+        ExtentTestManager.removeTest();
+
+        // Fallback initialization for direct class/method execution where listener wiring may be skipped.
+        if (ExtentTestManager.getTest() == null) {
+            ExtentTestManager.createTest(method.getName());
+        }
 
         // Initialize WebDriver for each test method (thread-safe)
         DriverManager.initializeDriver();
@@ -82,6 +96,8 @@ public abstract class BaseTest {
             LoggerUtil.info(BaseTest.class, "WebDriver closed successfully");
         } catch (Exception e) {
             LoggerUtil.error(BaseTest.class, "Error closing WebDriver: " + e.getMessage(), e);
+        } finally {
+            ExtentTestManager.removeTest();
         }
     }
 
