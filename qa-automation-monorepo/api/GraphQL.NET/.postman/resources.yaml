@@ -1,0 +1,11 @@
+# Use this workspace to collaborate
+workspace:
+  id: ""
+
+localResources:
+  collections:
+    - ../bin/Debug/net6.0/postman/collection.json
+    - ../bin/Debug/net9.0/postman/collection.json
+  environments:
+    - ../bin/Debug/net6.0/postman/environment.json
+    - ../bin/Debug/net9.0/postman/environment.json
