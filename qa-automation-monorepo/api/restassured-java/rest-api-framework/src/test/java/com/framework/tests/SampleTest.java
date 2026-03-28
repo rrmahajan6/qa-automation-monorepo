@@ -1,5 +1,12 @@
 package com.framework.tests;
+import java.util.List;
+
 import static org.hamcrest.Matchers.equalTo;
+import org.testng.annotations.Test;
+
+import com.framework.models.request.AddPlaceRequest;
+import com.framework.models.request.Location;
+import com.framework.models.response.AddPlaceResponse;
 
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -94,6 +101,40 @@ public class SampleTest {
         String website = js.getString("dashboard.website");
         System.out.println("Website: " + website); 
     }
+    @Test
+    public void requestPayloadasPojo(){
+        AddPlaceRequest request = new AddPlaceRequest();
+        request.setAccuracy(50);
+        request.setAddress("29, side layout, cohen 09");
+        request.setLanguage("French-IN");
+        request.setName("Frontline house");
+        request.setPhoneNumber("(+91) 983 893 3937");
+        request.setTypes(List.of("shoe park", "shop"));
+        Location location = new Location();
+        location.setLat(-38.383494);
+        location.setLng(33.427362);
+        request.setLocation(location);
+        request.setWebsite("http://google.com");
+        RestAssured.baseURI = "https://rahulshettyacademy.com";
+        AddPlaceResponse response = given()
+         .log().all()
+         .queryParam("key", "qaclick123")
+         .header("Content-Type", "application/json")
+         .body(request)
+            .when()
+            .post("maps/api/place/add/json")
+            .then()
+            .assertThat().statusCode(200)
+            .body("scope", equalTo("APP"))
+            .extract().response().as(AddPlaceResponse.class);
+        System.out.println(response);
+        System.out.println("Place ID: " + response.getPlaceId());
+        System.out.println("scope: " + response.getScope());
+        System.out.println("reference: " + response.getReference());
+        System.out.println("id: " + response.getId());
+        System.out.println("status: " + response.getStatus());
+    }
+
     public String payload(){
         return "{\n" + //
                 "  \"location\": {\n" + //
