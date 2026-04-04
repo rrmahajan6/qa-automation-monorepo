@@ -1,0 +1,20 @@
+[
+  {
+    "productName": "ProductName 1",
+    "productCategory": "fashion",
+    "productSubCategory": "clothing",
+    "productPrice": 11500,
+    "productDescription": "Adidas Originals",
+    "productFor": "men",
+    "country": "India"
+  },
+  {
+    "productName": "ProductName 2",
+    "productCategory": "electronics",
+    "productSubCategory": "mobiles",
+    "productPrice": 25000,
+    "productDescription": "Samsung Galaxy",
+    "productFor": "women",
+    "country": "USA"
+  }
+]

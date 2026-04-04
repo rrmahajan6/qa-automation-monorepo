@@ -1,6 +1,9 @@
 package com.framework.utils;
 
+import java.util.Map;
+
 import com.framework.config.ConfigManager;
+
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -8,10 +11,6 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Map;
 
 /**
  * Factory for reusable REST Assured RequestSpecifications.
@@ -26,8 +25,6 @@ import java.util.Map;
  * </pre>
  */
 public final class SpecBuilder {
-
-    private static final Logger log = LogManager.getLogger(SpecBuilder.class);
 
     private SpecBuilder() {}
 
@@ -62,6 +59,33 @@ public final class SpecBuilder {
      */
     public static RequestSpecification authSpec() {
         return authSpec(ConfigManager.get().authToken());
+    }
+
+    /**
+     * Spec for the Shop API with token-based auth (token in Authorization header, no "Bearer" prefix).
+     */
+    public static RequestSpecification shopAuthSpec(String token) {
+        return new RequestSpecBuilder()
+                .setBaseUri(ConfigManager.get().shopBaseUrl())
+                .addHeader("Authorization", token)
+                .addFilter(new AllureRestAssured())
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+    }
+
+    /**
+     * Spec for the Places API (with API key).
+     */
+    public static RequestSpecification placesSpec() {
+        return new RequestSpecBuilder()
+                .setBaseUri(ConfigManager.get().baseUrl())
+                .setContentType(ContentType.JSON)
+                .addQueryParam("key", ConfigManager.get().placesApiKey())
+                .addFilter(new AllureRestAssured())
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
     }
 
     /**

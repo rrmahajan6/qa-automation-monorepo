@@ -41,6 +41,26 @@ public interface EnvironmentConfig extends Config {
     @DefaultValue("")
     String authPassword();
 
+    @Key("shop.base.url")
+    @DefaultValue("")
+    String shopBaseUrl();
+
+    @Key("shop.user.email")
+    @DefaultValue("")
+    String shopUserEmail();
+
+    @Key("shop.user.password")
+    @DefaultValue("")
+    String shopUserPassword();
+
+    @Key("places.api.key")
+    @DefaultValue("qaclick123")
+    String placesApiKey();
+
+    @Key("token.expiry.buffer.seconds")
+    @DefaultValue("60")
+    int tokenExpiryBufferSeconds();
+
     @Key("retry.count")
     @DefaultValue("1")
     int retryCount();

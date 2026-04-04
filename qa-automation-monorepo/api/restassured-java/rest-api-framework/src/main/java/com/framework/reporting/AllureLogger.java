@@ -1,12 +1,12 @@
 package com.framework.reporting;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Step;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
+import io.qameta.allure.Allure;
 
 /**
  * Helper methods for attaching structured data to the Allure report.

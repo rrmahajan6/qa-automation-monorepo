@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="REST API Test Suite" verbose="2" parallel="classes" thread-count="4">
+<suite name="REST API Test Suite" verbose="2" parallel="methods" thread-count="4"
+       data-provider-thread-count="3">
 
     <listeners>
         <listener class-name="com.framework.listeners.TestListener"/>
@@ -16,8 +17,8 @@
             </run>
         </groups>
         <classes>
-            <class name="com.framework.tests.UserTests"/>
-            <class name="com.framework.tests.PostTests"/>
+            <class name="com.framework.tests.PlaceAPITests"/>
+            <class name="com.framework.tests.ShoppingTests"/>
         </classes>
     </test>
 
@@ -29,8 +30,20 @@
             </run>
         </groups>
         <classes>
-            <class name="com.framework.tests.UserTests"/>
-            <class name="com.framework.tests.PostTests"/>
+            <class name="com.framework.tests.PlaceAPITests"/>
+            <class name="com.framework.tests.ShoppingTests"/>
+        </classes>
+    </test>
+
+    <!-- ── E2E Tests ───────────────────────────────────────────────── -->
+    <test name="E2E Tests" preserve-order="true">
+        <groups>
+            <run>
+                <include name="e2e"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.framework.tests.ShoppingTests"/>
         </classes>
     </test>
 

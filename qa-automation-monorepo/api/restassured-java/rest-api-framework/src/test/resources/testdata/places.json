@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Frontline house",
+    "address": "29, side layout, cohen 09",
+    "phoneNumber": "(+91) 983 893 3937",
+    "language": "French-IN",
+    "website": "http://google.com",
+    "lat": -38.383494,
+    "lng": 33.427362,
+    "accuracy": 50,
+    "types": ["shoe park", "shop"]
+  },
+  {
+    "name": "Ocean View Cafe",
+    "address": "12, marine drive, bandra",
+    "phoneNumber": "(+91) 900 123 4567",
+    "language": "English-IN",
+    "website": "http://oceanview.com",
+    "lat": 19.054,
+    "lng": 72.838,
+    "accuracy": 70,
+    "types": ["cafe", "restaurant"]
+  },
+  {
+    "name": "Tech Hub Center",
+    "address": "88, IT park, whitefield",
+    "phoneNumber": "(+91) 988 555 1234",
+    "language": "Hindi-IN",
+    "website": "http://techhub.com",
+    "lat": 12.9716,
+    "lng": 77.5946,
+    "accuracy": 90,
+    "types": ["office", "coworking"]
+  }
+]

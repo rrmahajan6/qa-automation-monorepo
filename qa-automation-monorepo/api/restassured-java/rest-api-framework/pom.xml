@@ -158,14 +158,21 @@
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                        <env>${env}</env>
                     </systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
+                    <parallel>methods</parallel>
+                    <threadCount>4</threadCount>
                     <properties>
                         <property>
                             <name>usedefaultlisteners</name>
                             <value>false</value>
+                        </property>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>3</value>
                         </property>
                     </properties>
                 </configuration>
@@ -197,6 +204,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
