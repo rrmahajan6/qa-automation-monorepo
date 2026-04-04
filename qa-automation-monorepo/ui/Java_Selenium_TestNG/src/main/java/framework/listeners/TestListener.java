@@ -163,7 +163,9 @@ public class TestListener implements ITestListener, IAnnotationTransformer {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
-        // Set retry analyzer for all test methods
-        annotation.setRetryAnalyzer(RetryAnalyzer.class);
+        // Apply default retry analyzer only when test does not define its own.
+        if (annotation.getRetryAnalyzerClass() == null) {
+            annotation.setRetryAnalyzer(RetryAnalyzer.class);
+        }
     }
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "username": "rrmahajan6@gmail.com",
+    "password": "Test@1234",
+    "productName": "ADIDAS ORIGINAL",
+    "cardNumber": "1234 1234 1234 1234",
+    "cvv": "111",
+    "nameOnCard": "Jack Miller",
+    "country": "India"
+  },
+  {
+    "username": "rrmahajan6@gmail.com",
+    "password": "Test@1234",
+    "productName": "ADIDAS ORIGINAL",
+    "cardNumber": "1234 1234 1234 1234",
+    "cvv": "111",
+    "nameOnCard": "Jack Miller",
+    "country": "India"
+  }
+]

@@ -2,6 +2,9 @@ package framework.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 /**
@@ -19,11 +22,21 @@ public class ConfigReader {
      */
     public static void loadProperties(String filePath) {
         properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(filePath)) {
-            properties.load(fis);
+        try (InputStream inputStream = openInputStream(filePath)) {
+            properties.load(inputStream);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load properties file: " + filePath, e);
         }
+    }
+
+    /**
+     * Load base and environment specific properties.
+     * Example: application.properties + application-qa.properties
+     */
+    public static void loadEnvironmentProperties(String env) {
+        properties = new Properties();
+        loadInto(properties, "application.properties");
+        loadInto(properties, String.format("application-%s.properties", env));
     }
 
     /**
@@ -59,14 +72,7 @@ public class ConfigReader {
      * Load default properties from application.properties
      */
     private static void loadDefaultProperties() {
-        properties = new Properties();
-        try {
-            String configFilePath = "src/test/resources/application.properties";
-            FileInputStream fis = new FileInputStream(configFilePath);
-            properties.load(fis);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load default properties file: " + e.getMessage(), e);
-        }
+        loadEnvironmentProperties("qa");
     }
 
     /**
@@ -79,5 +85,29 @@ public class ConfigReader {
             loadDefaultProperties();
         }
         return properties.containsKey(key);
+    }
+
+    private static void loadInto(Properties target, String filePath) {
+        try (InputStream inputStream = openInputStream(filePath)) {
+            Properties temp = new Properties();
+            temp.load(inputStream);
+            target.putAll(temp);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load properties file: " + filePath, e);
+        }
+    }
+
+    private static InputStream openInputStream(String filePath) throws IOException {
+        Path path = Path.of(filePath);
+        if (Files.exists(path)) {
+            return new FileInputStream(filePath);
+        }
+
+        InputStream classpathStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+        if (classpathStream != null) {
+            return classpathStream;
+        }
+
+        throw new IOException("Properties file not found at path or classpath: " + filePath);
     }
 }

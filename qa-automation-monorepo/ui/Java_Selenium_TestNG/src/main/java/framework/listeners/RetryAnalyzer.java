@@ -1,6 +1,6 @@
 package framework.listeners;
 
-import framework.base.DriverManager;
+import framework.config.GlobalConfig;
 import framework.utils.LoggerUtil;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
@@ -13,7 +13,7 @@ import org.testng.ITestResult;
 public class RetryAnalyzer implements IRetryAnalyzer {
 
     private int retryCount = 0;
-    private int maxRetryCount = 2;
+    private final int maxRetryCount = GlobalConfig.getMaxRetries();
 
     /**
      * Analyze test result and determine if retry is needed
@@ -31,24 +31,10 @@ public class RetryAnalyzer implements IRetryAnalyzer {
                 " (Attempt " + (retryCount + 1) + "/" + maxRetryCount + ")");
             
             retryCount++;
-            
-            // Restart driver for fresh state
-            try {
-                DriverManager.restartDriver();
-            } catch (Exception e) {
-                LoggerUtil.error(RetryAnalyzer.class, "Error restarting driver: " + e.getMessage());
-            }
-            
+
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Set max retry count
-     */
-    public void setMaxRetryCount(int maxRetryCount) {
-        this.maxRetryCount = maxRetryCount;
     }
 }

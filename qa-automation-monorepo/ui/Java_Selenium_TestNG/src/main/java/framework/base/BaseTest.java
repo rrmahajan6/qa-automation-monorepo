@@ -37,6 +37,8 @@ public abstract class BaseTest {
     public void beforeSuite() {
         LoggerUtil.info(BaseTest.class, "========== Test Suite Started ==========");
         GlobalConfig.initialize();
+        LoggerUtil.info(BaseTest.class, "Active Environment: " + GlobalConfig.getEnvironment());
+        LoggerUtil.info(BaseTest.class, "Base URL: " + GlobalConfig.getBaseUrl());
         
         // Clean database before test execution (if DB is enabled)
         if (GlobalConfig.isDbEnabled()) {

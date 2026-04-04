@@ -1,10 +1,17 @@
 package framework.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +34,36 @@ public class TestDataUtil {
         } catch (IOException e) {
             LoggerUtil.error(TestDataUtil.class, "Failed to load test data from: " + filePath, e);
             throw new RuntimeException("Test data file not found: " + filePath, e);
+        }
+    }
+
+    /**
+     * Load JSON object from classpath resources.
+     */
+    public static JsonObject loadJsonObjectFromClasspath(String resourcePath) {
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath)) {
+            if (inputStream == null) {
+                throw new IOException("Resource not found: " + resourcePath);
+            }
+            return gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
+        } catch (IOException e) {
+            LoggerUtil.error(TestDataUtil.class, "Failed to load JSON object from classpath: " + resourcePath, e);
+            throw new RuntimeException("Test data resource not found: " + resourcePath, e);
+        }
+    }
+
+    /**
+     * Load JSON array from classpath resources.
+     */
+    public static JsonArray loadJsonArrayFromClasspath(String resourcePath) {
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath)) {
+            if (inputStream == null) {
+                throw new IOException("Resource not found: " + resourcePath);
+            }
+            return gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonArray.class);
+        } catch (IOException e) {
+            LoggerUtil.error(TestDataUtil.class, "Failed to load JSON array from classpath: " + resourcePath, e);
+            throw new RuntimeException("Test data resource not found: " + resourcePath, e);
         }
     }
 
@@ -69,5 +106,16 @@ public class TestDataUtil {
             map.put(key, jsonObject.get(key).getAsString())
         );
         return map;
+    }
+
+    /**
+     * Convert a JSON array of objects into TestNG Object[][].
+     */
+    public static Object[][] jsonArrayToDataProvider(JsonArray dataArray) {
+        List<Object[]> rows = new ArrayList<>();
+        for (JsonElement element : dataArray) {
+            rows.add(new Object[] { jsonToMap(element.getAsJsonObject()) });
+        }
+        return rows.toArray(new Object[0][]);
     }
 }

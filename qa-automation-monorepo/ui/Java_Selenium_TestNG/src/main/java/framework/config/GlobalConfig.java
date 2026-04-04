@@ -9,6 +9,8 @@ import framework.enums.BrowserType;
  */
 public class GlobalConfig {
 
+    private static String environment = "qa";
+
     // Browser Configuration
     private static BrowserType browserType = BrowserType.CHROME;
     private static String baseUrl = "https://practicetestautomation.com";
@@ -41,39 +43,71 @@ public class GlobalConfig {
      */
     public static void initialize() {
         try {
-            String configPath = System.getProperty("configPath", "src/test/resources/application.properties");
-            ConfigReader.loadProperties(configPath);
+            String configPath = System.getProperty("configPath");
+            if (configPath != null && !configPath.isBlank()) {
+                ConfigReader.loadProperties(configPath);
+                environment = System.getProperty("env", environment);
+            } else {
+                environment = readFromSystemOrEnv("env", "TEST_ENV", "qa");
+                ConfigReader.loadEnvironmentProperties(environment);
+            }
 
-            browserType = BrowserType.fromString(ConfigReader.getProperty("browser", "chrome"));
-            baseUrl = ConfigReader.getProperty("base.url", baseUrl);
-            headless = Boolean.parseBoolean(ConfigReader.getProperty("headless", "false"));
-            pageLoadTimeout = Integer.parseInt(ConfigReader.getProperty("page.load.timeout", "30"));
-            implicitWait = Integer.parseInt(ConfigReader.getProperty("implicit.wait", "10"));
-            explicitWait = Integer.parseInt(ConfigReader.getProperty("explicit.wait", "20"));
-            pollingInterval = Integer.parseInt(ConfigReader.getProperty("polling.interval", "500"));
+            browserType = BrowserType.fromString(getValue("browser", "BROWSER", "chrome"));
+            baseUrl = getValue("base.url", "BASE_URL", baseUrl);
+            headless = Boolean.parseBoolean(getValue("headless", "HEADLESS", "false"));
+            pageLoadTimeout = Integer.parseInt(getValue("page.load.timeout", "PAGE_LOAD_TIMEOUT", "30"));
+            implicitWait = Integer.parseInt(getValue("implicit.wait", "IMPLICIT_WAIT", "10"));
+            explicitWait = Integer.parseInt(getValue("explicit.wait", "EXPLICIT_WAIT", "20"));
+            pollingInterval = Integer.parseInt(getValue("polling.interval", "POLLING_INTERVAL", "500"));
 
-            maxRetries = Integer.parseInt(ConfigReader.getProperty("max.retries", "2"));
-            takeScreenshots = Boolean.parseBoolean(ConfigReader.getProperty("take.screenshots", "true"));
-            capturePageSource = Boolean.parseBoolean(ConfigReader.getProperty("capture.page.source", "true"));
-            reportPath = ConfigReader.getProperty("report.path", "test-results/");
-            parallel = Boolean.parseBoolean(ConfigReader.getProperty("parallel.execution", "false"));
-            threadCount = Integer.parseInt(ConfigReader.getProperty("thread.count", "4"));
+            maxRetries = Integer.parseInt(getValue("max.retries", "MAX_RETRIES", "2"));
+            takeScreenshots = Boolean.parseBoolean(getValue("take.screenshots", "TAKE_SCREENSHOTS", "true"));
+            capturePageSource = Boolean.parseBoolean(getValue("capture.page.source", "CAPTURE_PAGE_SOURCE", "true"));
+            reportPath = getValue("report.path", "REPORT_PATH", "test-results/");
+            parallel = Boolean.parseBoolean(getValue("parallel.execution", "PARALLEL_EXECUTION", "false"));
+            threadCount = Integer.parseInt(getValue("thread.count", "THREAD_COUNT", "4"));
 
-            logLevel = ConfigReader.getProperty("log.level", "INFO");
+            logLevel = getValue("log.level", "LOG_LEVEL", "INFO");
 
-            dbEnabled = Boolean.parseBoolean(ConfigReader.getProperty("db.enabled", "false"));
-            dbUrl = ConfigReader.getProperty("db.url", dbUrl);
-            dbUsername = ConfigReader.getProperty("db.username", dbUsername);
-            dbPassword = ConfigReader.getProperty("db.password", dbPassword);
-            dbConnectionTimeoutSeconds = Integer.parseInt(ConfigReader.getProperty("db.connection.timeout.seconds", "10"));
+            dbEnabled = Boolean.parseBoolean(getValue("db.enabled", "DB_ENABLED", "false"));
+            dbUrl = getValue("db.url", "DB_URL", dbUrl);
+            dbUsername = getValue("db.username", "DB_USERNAME", dbUsername);
+            dbPassword = getValue("db.password", "DB_PASSWORD", dbPassword);
+            dbConnectionTimeoutSeconds = Integer.parseInt(getValue("db.connection.timeout.seconds", "DB_CONNECTION_TIMEOUT_SECONDS", "10"));
         } catch (Exception e) {
             System.err.println("Warning: Could not load all configuration properties. Using defaults. " + e.getMessage());
         }
     }
 
+    private static String getValue(String propertyKey, String envKey, String defaultValue) {
+        String systemOrEnvValue = readFromSystemOrEnv(propertyKey, envKey, null);
+        if (systemOrEnvValue != null && !systemOrEnvValue.isBlank()) {
+            return systemOrEnvValue;
+        }
+        return ConfigReader.getProperty(propertyKey, defaultValue);
+    }
+
+    private static String readFromSystemOrEnv(String systemKey, String envKey, String defaultValue) {
+        String systemValue = System.getProperty(systemKey);
+        if (systemValue != null && !systemValue.isBlank()) {
+            return systemValue;
+        }
+
+        String envValue = System.getenv(envKey);
+        if (envValue != null && !envValue.isBlank()) {
+            return envValue;
+        }
+
+        return defaultValue;
+    }
+
     // Getters
     public static BrowserType getBrowserType() {
         return browserType;
+    }
+
+    public static String getEnvironment() {
+        return environment;
     }
 
     public static String getBaseUrl() {

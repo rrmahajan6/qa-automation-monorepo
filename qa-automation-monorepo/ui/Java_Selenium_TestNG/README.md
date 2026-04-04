@@ -17,6 +17,8 @@ This is a **production-grade automation framework** built with:
 ✅ **Parallel Execution** - Run tests in parallel for faster results  
 ✅ **Explicit Waits** - Eliminates flaky tests with smart waits  
 ✅ **Retry Logic** - Automatic retry on failure  
+✅ **Multi-Environment Support** - Run same suite against qa/dev/staging/prod  
+✅ **Data-Driven Testing** - TestNG DataProvider + external JSON datasets  
 ✅ **Comprehensive Logging** - Track everything with Log4j 2  
 ✅ **Screenshot Capture** - Auto screenshots on test failure  
 ✅ **Test Data Management** - External config file support  
@@ -131,12 +133,23 @@ mvn test -Dheadless=true
 mvn test -Dparallel=true -DthreadCount=4
 ```
 
+### Run with Environment and Parallel Overrides (Recommended)
+```bash
+mvn clean test -Denv=qa -Dbrowser=chrome -Dheadless=true -Dthread.count=4 -Dmax.retries=2
+```
+
 ### Run with Different Environment Profile
 ```bash
 mvn test -Pdev          # Local/Dev environment
 mvn test -Pstaging      # Staging environment
 mvn test -Pprod         # Production environment
 ```
+
+### Run Data-Driven Suite (default)
+```bash
+mvn clean test
+```
+Data files are located under `src/test/resources/testdata/`.
 
 ---
 

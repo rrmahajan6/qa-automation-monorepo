@@ -1,8 +1,8 @@
 package tests;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import framework.base.BaseTest;
 import framework.config.GlobalConfig;
+import framework.dataproviders.TestDataProvider;
 import framework.pages.PageObjectManager;
 import framework.pages.HomePage;
 import framework.pages.LoginPage;
@@ -11,16 +11,28 @@ import framework.pages.PaymentPage;
 import framework.utils.ExtentTestManager;
 import framework.utils.LoggerUtil;
 import framework.utils.db.DatabaseUtil;
+import java.util.Map;
 
 public class PurchaseProduct extends BaseTest {
-    @Test(description = "Test to purchase a product", priority = 1, groups = {"purchase", "regression"})
-    public void testPurchaseProduct() {
-        String customerEmail = "rrmahajan6@gmail.com";
-        String productName = "ADIDAS ORIGINAL";
+    @Test(
+            description = "Test to purchase a product",
+            priority = 1,
+            groups = {"purchase", "regression"},
+            dataProvider = "statefulPurchaseData",
+            dataProviderClass = TestDataProvider.class
+    )
+    public void testPurchaseProduct(Map<String, String> testData) {
+        String customerEmail = testData.get("username");
+        String password = testData.get("password");
+        String productName = testData.get("productName");
+        String cardNumber = testData.get("cardNumber");
+        String cvv = testData.get("cvv");
+        String nameOnCard = testData.get("nameOnCard");
+        String country = testData.get("country");
         
         PageObjectManager pages = new PageObjectManager(getDriver());
         LoginPage loginPage = pages.getLoginPage();
-        loginPage.login(customerEmail, "Test@1234");
+        loginPage.login(customerEmail, password);
 
         HomePage homePage = pages.getHomePage();
         homePage.addProductsToCart(productName);
@@ -30,11 +42,11 @@ public class PurchaseProduct extends BaseTest {
         myCartPage.clickCheckout();
 
         PaymentPage paymentPage = pages.getPaymentPage();
-        paymentPage.enterCardDetails("1234 1234 1234 1234", "111", "Jack Miller");
-        paymentPage.selectCountry("India");
-        paymentPage.selectCountryFromDropdown("India");
+        paymentPage.enterCardDetails(cardNumber, cvv, nameOnCard);
+        paymentPage.selectCountry(country);
+        paymentPage.selectCountryFromDropdown(country);
         paymentPage.clickPlaceOrder();
-        ExtentTestManager.getTest().info("Purchase test executed successfully with valid credentials");
+        ExtentTestManager.getTest().info("Purchase test executed successfully for product: " + productName);
         
         // Verify purchase in database using generic SQL methods (if DB integration is enabled)
         if (GlobalConfig.isDbEnabled()) {
