@@ -12,7 +12,7 @@ export class HomePage extends BasePage {
     await this.click(this.locators.cart);
   }
   async addToCartAllProducts() {
-     await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForLoadState('domcontentloaded');
     await this.locators.commonAddToCart.first().waitFor({ state: 'visible', timeout: 10000 });
     const count = await this.locators.commonAddToCart.count();
     for(let i=0;i<count;i++){
