@@ -1,0 +1,26 @@
+{
+  "username": {
+    "type": "id",
+    "value": "userEmail"
+  },
+  "password": {
+    "type": "id",
+    "value": "userPassword"
+  },
+  "loginBtn": {
+    "type": "id",
+    "value": "login"
+  },
+  "errorMessage": {
+    "type": "id",
+    "value": "error"
+  },
+  "forgotPasswordLink": {
+    "type": "id",
+    "value": "forgotPassword"
+  },
+  "signUpLink": {
+    "type": "id",
+    "value": "signUp"
+  }
+}

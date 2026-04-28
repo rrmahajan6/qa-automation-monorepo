@@ -76,6 +76,14 @@ export const test = base.extend({
   },
 });
 
+test.beforeEach(async ({}, testInfo) => {
+  await TestHooks.beforeEach(testInfo);
+});
+
+test.afterEach(async ({}, testInfo) => {
+  await TestHooks.afterEach(undefined, testInfo);
+});
+
 /**
  * Export expect for convenience
  */

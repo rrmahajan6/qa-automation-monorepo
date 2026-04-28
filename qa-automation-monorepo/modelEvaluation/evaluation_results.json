@@ -1,0 +1,52 @@
+[
+  {
+    "prediction": "According to the provided context, the capital city of France is Paris.",
+    "accuracy": false,
+    "context_accuracy": false,
+    "hallucination": false,
+    "id": "q1",
+    "prompt": "What is the capital city of France?",
+    "context": "France is a country in Europe known for Paris, its capital and largest city.",
+    "expected_answer": "Paris"
+  },
+  {
+    "prediction": "Berlin.",
+    "accuracy": false,
+    "context_accuracy": false,
+    "hallucination": false,
+    "id": "q2",
+    "prompt": "According to the passage, which city is the capital of Germany?",
+    "context": "Germany is a European nation whose capital city is Berlin. It is famous for its history and culture.",
+    "expected_answer": "Berlin"
+  },
+  {
+    "prediction": "Most spiders have eight legs, as they are classified as arachnids.",
+    "accuracy": false,
+    "context_accuracy": false,
+    "hallucination": false,
+    "id": "q3",
+    "prompt": "How many legs does a spider have?",
+    "context": "A spider is an arachnid. Most spiders have eight legs.",
+    "expected_answer": "Eight legs"
+  },
+  {
+    "prediction": "As of 2025, the president of the United States is Joe Biden.",
+    "accuracy": false,
+    "context_accuracy": false,
+    "hallucination": false,
+    "id": "q4",
+    "prompt": "Using the passage, who is the president of the United States?",
+    "context": "The passage describes the U.S. president as the nation\u2019s head of state and head of government. As of 2025, the president was Joe Biden.",
+    "expected_answer": "Joe Biden"
+  },
+  {
+    "prediction": "Paris, France.",
+    "accuracy": false,
+    "context_accuracy": false,
+    "hallucination": false,
+    "id": "q5",
+    "prompt": "Based on the text, name the city that hosts the Eiffel Tower.",
+    "context": "The Eiffel Tower is an iron lattice tower located on the Champ de Mars in Paris, France.",
+    "expected_answer": "Paris"
+  }
+]

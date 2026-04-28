@@ -20,13 +20,15 @@ export class TestHooks {
    * @param {Object} testInfo - Test information
    */
   static async afterEach(page, testInfo) {
-    // Take screenshot on failure
+    // Take screenshot on failure if a page is available
     if (testInfo.status === 'failed') {
-      const screenshot = await page.screenshot();
-      await testInfo.attach('failure-screenshot', {
-        body: screenshot,
-        contentType: 'image/png',
-      });
+      if (page) {
+        const screenshot = await page.screenshot();
+        await testInfo.attach('failure-screenshot', {
+          body: screenshot,
+          contentType: 'image/png',
+        });
+      }
       logger.error(`✗ Test failed: ${testInfo.title}`);
     } else if (testInfo.status === 'passed') {
       logger.success(`✓ Test passed: ${testInfo.title}`);

@@ -1,12 +1,13 @@
 import {test, expect} from '../../../fixtures/testFixtures.js';
-import { LoginPage } from '../../../pages/login/LoginPage.js';
+import { PageManager } from '../../../pages/PageManager.js';
 import logger from '../../../utils/logger.js';
 
 //test case without using login fixture
 test("Login to application with correct credentials",async({page})=>{
-    const login = new LoginPage(page);
-    await login.goto();
-    await login.loginWithDefaultCredentials();
+    const pageManager = new PageManager(page);
+    const loginPage = pageManager.loginPage();
+    await loginPage.goto();
+    await loginPage.loginWithDefaultCredentials();
     await page.waitForTimeout(5000);
 });
 

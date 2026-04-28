@@ -8,7 +8,10 @@
     <groupId>com.automation</groupId>
     <artifactId>selenium-testng-framework</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>demo</module>
+    </modules>
 
     <name>Selenium TestNG Automation Framework</name>
     <description>Production-grade automation framework using Selenium, TestNG, and Maven</description>
@@ -143,7 +146,7 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>../testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <parallel>${parallel.mode}</parallel>
                     <threadCount>${thread.count}</threadCount>
