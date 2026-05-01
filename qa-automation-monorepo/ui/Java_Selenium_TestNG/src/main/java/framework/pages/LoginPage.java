@@ -1,9 +1,10 @@
 package framework.pages;
 
-import framework.base.BasePage;
-import framework.utils.LoggerUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import framework.base.BasePage;
+import framework.utils.LoggerUtil;
 
 
 public class LoginPage extends BasePage {
