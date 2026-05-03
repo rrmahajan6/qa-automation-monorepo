@@ -65,9 +65,6 @@ public abstract class BaseTest {
     public void beforeMethod(Method method) {
         LoggerUtil.info(BaseTest.class, "========== Starting test: " + this.getClass().getSimpleName() + " ==========");
 
-        // Always reset thread-local test context before starting a new method.
-        ExtentTestManager.removeTest();
-
         // Fallback initialization for direct class/method execution where listener wiring may be skipped.
         if (ExtentTestManager.getTest() == null) {
             ExtentTestManager.createTest(method.getName());

@@ -1,0 +1,15 @@
+test-output/
+target/
+logs/
+screenshots/
+reports/
+*.log
+*.tmp
+*.bak
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+.idea/
+.vscode/
